@@ -1,20 +1,77 @@
+import { useState } from 'react';
 import { mobileHero1, aboutDark, aboutLight } from './assets';
 import {
   ArrowIcon,
+  CloseIcon,
   HamburgerIcon,
   LeftAngleIcon,
   LogoIcon,
   RightAngleIcon,
 } from './icons';
 
+function Nav() {
+  const [openNav, setOpenNav] = useState(false);
+
+  return (
+    <nav>
+      {openNav ? (
+        <div
+          onClick={() => setOpenNav(false)}
+          className="fixed inset-0 z-50 bg-black/60 md:hidden"
+        >
+          <div className="absolute inset-x-0 flex items-center justify-between bg-white px-5 py-10">
+            <CloseIcon
+              onClick={() => setOpenNav(!openNav)}
+              className="cursor-pointer"
+            />
+            <ul className="flex gap-10 font-semibold">
+              <li>
+                <a href="#">home</a>
+              </li>
+              <li>
+                <a href="#">shop</a>
+              </li>
+              <li>
+                <a href="#about">about</a>
+              </li>
+              <li>
+                <a href="#">contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <div className=" absolute inset-x-0 z-50 flex px-5 py-10 md:max-w-lg md:items-center md:px-16 md:py-20 ">
+          <HamburgerIcon
+            onClick={() => setOpenNav(!openNav)}
+            className="cursor-pointer md:hidden"
+          />
+          <LogoIcon className=" ml-auto mr-auto md:ml-0" />
+          <ul className="hidden gap-10 font-semibold text-white drop-shadow-md md:flex">
+            <li>
+              <a href="#">home</a>
+            </li>
+            <li>
+              <a href="#">shop</a>
+            </li>
+            <li>
+              <a href="#about">about</a>
+            </li>
+            <li>
+              <a href="#">contact</a>
+            </li>
+          </ul>
+        </div>
+      )}
+    </nav>
+  );
+}
+
 function App() {
   return (
     <div className=" flex min-h-screen flex-col  bg-slate-50 font-spartan">
       <main>
-        <nav className="absolute inset-x-0 z-50 flex px-5 py-10">
-          <HamburgerIcon className="cursor-pointer" />
-          <LogoIcon className=" ml-auto mr-auto" />
-        </nav>
+        <Nav />
 
         <section className=" h-screen">
           <div className=" relative ">
@@ -47,7 +104,7 @@ function App() {
             </span>
           </div>
         </section>
-        <section className=" h-screen">
+        <section id="about" className=" h-screen">
           <div className="  ">
             <img src={aboutDark} alt="" className=" w-full " />
           </div>
