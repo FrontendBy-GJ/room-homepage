@@ -69,7 +69,7 @@ function Nav() {
 
 function App() {
   return (
-    <div className=" min-h-screen bg-white font-spartan ">
+    <div className=" mx-auto min-h-screen max-w-[1440px] bg-white font-spartan ">
       <Nav />
       <main className=" grid grid-cols-1 md:min-h-screen ">
         <section className=" min-h-screen md:row-span-1 md:grid md:min-h-0  md:grid-cols-1 lg:grid-cols-10 ">
