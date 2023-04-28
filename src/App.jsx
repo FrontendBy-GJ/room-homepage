@@ -54,16 +54,24 @@ function Nav() {
           <LogoIcon className=" ml-auto mr-auto md:ml-0" />
           <ul className="hidden gap-10 font-semibold text-white drop-shadow-md md:flex">
             <li>
-              <a href="#">home</a>
+              <a className="border-white pb-2 hover:border-b-2 " href="#">
+                home
+              </a>
             </li>
             <li>
-              <a href="#">shop</a>
+              <a className="border-white pb-2 hover:border-b-2 " href="#">
+                shop
+              </a>
             </li>
             <li>
-              <a href="#about">about</a>
+              <a className="border-white pb-2 hover:border-b-2 " href="#about">
+                about
+              </a>
             </li>
             <li>
-              <a href="#">contact</a>
+              <a className="border-white pb-2 hover:border-b-2 " href="#">
+                contact
+              </a>
             </li>
           </ul>
         </div>
@@ -93,13 +101,13 @@ function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
         <div className="absolute bottom-0 right-0 bg-black xl:-right-[156px] ">
           <button
             onClick={prevSlide}
-            className="inline-flex cursor-pointer p-4 xl:px-8 xl:py-7"
+            className="inline-flex cursor-pointer p-4 transition hover:bg-VeryDarkGray xl:px-8 xl:py-7"
           >
             <LeftAngleIcon />
           </button>
           <button
             onClick={nextSlide}
-            className="inline-flex cursor-pointer p-4 xl:px-8 xl:py-7"
+            className="inline-flex cursor-pointer p-4 transition hover:bg-VeryDarkGray xl:px-8 xl:py-7"
           >
             <RightAngleIcon />
           </button>
@@ -114,9 +122,9 @@ function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
         <p className="mt-1 text-sm leading-5 tracking-wide text-DarkGray xl:mt-3">
           {slide.content}
         </p>
-        <span className=" mt-6 flex cursor-pointer items-baseline gap-2 uppercase tracking-[15px]">
+        <span className=" mt-6 flex cursor-pointer items-baseline gap-2 uppercase tracking-[15px] transition hover:text-DarkGray">
           {slide.link}
-          <ArrowIcon />
+          <ArrowIcon className="fill-current" />
         </span>
       </div>
     </>
