@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mobileHero1, aboutDark, aboutLight, desktopHero1 } from './assets';
+import { aboutDark, aboutLight } from './assets';
 import {
   ArrowIcon,
   CloseIcon,
@@ -8,6 +8,7 @@ import {
   LogoIcon,
   RightAngleIcon,
 } from './icons';
+import { slides } from './data';
 
 function Nav() {
   const [openNav, setOpenNav] = useState(false);
@@ -20,10 +21,12 @@ function Nav() {
           className="fixed inset-0 z-50 bg-black/60 md:hidden"
         >
           <div className="absolute inset-x-0 flex items-center justify-between bg-white px-5 py-10">
-            <CloseIcon
+            <button
               onClick={() => setOpenNav(!openNav)}
               className="cursor-pointer"
-            />
+            >
+              <CloseIcon />
+            </button>
             <ul className="flex gap-10 font-semibold">
               <li>
                 <a href="#">home</a>
@@ -42,10 +45,12 @@ function Nav() {
         </div>
       ) : (
         <div className=" absolute inset-x-0 z-50 flex px-5 py-10 md:max-w-lg md:items-center md:px-12 md:py-16 ">
-          <HamburgerIcon
+          <button
             onClick={() => setOpenNav(!openNav)}
             className="cursor-pointer md:hidden"
-          />
+          >
+            <HamburgerIcon />
+          </button>
           <LogoIcon className=" ml-auto mr-auto md:ml-0" />
           <ul className="hidden gap-10 font-semibold text-white drop-shadow-md md:flex">
             <li>
@@ -67,44 +72,90 @@ function Nav() {
   );
 }
 
+function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
+  return (
+    <>
+      <div
+        className={` relative md:col-span-3 lg:col-span-6 ${
+          slide.id !== currentSlide ? 'hidden' : ''
+        } `}
+      >
+        <img
+          src={slide.images.mobile}
+          alt={slide.content}
+          className=" w-full sm:hidden "
+        />
+        <img
+          src={slide.images.desktop}
+          alt={slide.content}
+          className=" hidden w-full object-cover sm:inline lg:h-full "
+        />
+        <div className="absolute bottom-0 right-0 bg-black xl:-right-[156px] ">
+          <button
+            onClick={prevSlide}
+            className="inline-flex cursor-pointer p-4 xl:px-8 xl:py-7"
+          >
+            <LeftAngleIcon />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="inline-flex cursor-pointer p-4 xl:px-8 xl:py-7"
+          >
+            <RightAngleIcon />
+          </button>
+        </div>
+      </div>
+      <div
+        className={` relative col-span-2 px-8  pb-16 pt-12 lg:col-span-4 lg:m-auto xl:p-20 ${
+          slide.id !== currentSlide ? 'hidden' : ''
+        } `}
+      >
+        <h1 className=" text-4xl font-semibold xl:text-5xl">{slide.heading}</h1>
+        <p className="mt-1 text-sm leading-5 tracking-wide text-DarkGray xl:mt-3">
+          {slide.content}
+        </p>
+        <span className=" mt-6 flex cursor-pointer items-baseline gap-2 uppercase tracking-[15px]">
+          {slide.link}
+          <ArrowIcon />
+        </span>
+      </div>
+    </>
+  );
+}
+
 function App() {
+  const [currentSlide, setCurrentSlide] = useState(1);
+
+  const nextSlide = () => {
+    currentSlide !== slides.length
+      ? setCurrentSlide(currentSlide + 1)
+      : currentSlide === slides.length
+      ? setCurrentSlide(1)
+      : '';
+  };
+
+  const prevSlide = () => {
+    currentSlide !== 1
+      ? setCurrentSlide(currentSlide - 1)
+      : currentSlide === 1
+      ? setCurrentSlide(slides.length)
+      : '';
+  };
+
   return (
     <div className=" mx-auto min-h-screen max-w-[1440px] bg-white font-spartan ">
       <Nav />
       <main className=" grid grid-cols-1 md:min-h-screen ">
         <section className=" min-h-screen md:row-span-1 md:grid md:min-h-0  md:grid-cols-1 lg:grid-cols-10 ">
-          <div className=" relative md:col-span-3 lg:col-span-6 ">
-            <img src={mobileHero1} alt="" className=" w-full sm:hidden " />
-            <img
-              src={desktopHero1}
-              alt=""
-              className=" hidden w-full object-cover sm:inline lg:h-full "
+          {slides.map((slide) => (
+            <Slides
+              key={slide.id}
+              slide={slide}
+              currentSlide={currentSlide}
+              nextSlide={nextSlide}
+              prevSlide={prevSlide}
             />
-            <div className="absolute bottom-0 right-0 bg-black xl:-right-[156px] ">
-              <div className="inline-flex p-4 xl:px-8 xl:py-7">
-                <LeftAngleIcon className="cursor-pointer" />
-              </div>
-              <div className="inline-flex p-4 xl:px-8 xl:py-7">
-                <RightAngleIcon className="cursor-pointer" />
-              </div>
-            </div>
-          </div>
-          <div className=" col-span-2 px-8 pb-16  pt-12 lg:col-span-4 lg:m-auto xl:p-20 ">
-            <h1 className=" text-4xl font-semibold xl:text-5xl">
-              Discover innovative ways to decorate
-            </h1>
-            <p className="mt-1 text-sm leading-5 tracking-wide text-DarkGray xl:mt-3">
-              We provide unmatched quality, comfort, and style for property
-              owners across the country. Our experts combine form and function
-              in bringing your vision to life. Create a room in your own style
-              with our collection and make your property a reflection of you and
-              what you love.
-            </p>
-            <span className=" mt-6 flex cursor-pointer items-baseline gap-2 uppercase tracking-[15px]">
-              Shop now
-              <ArrowIcon />
-            </span>
-          </div>
+          ))}
         </section>
 
         <section
