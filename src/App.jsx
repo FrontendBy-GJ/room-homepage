@@ -9,73 +9,108 @@ import {
   RightAngleIcon,
 } from './icons';
 import { slides } from './data';
+import { AnimatePresence, motion as m } from 'framer-motion';
 
 function Nav() {
   const [openNav, setOpenNav] = useState(false);
 
   return (
     <nav>
-      {openNav ? (
-        <div
-          onClick={() => setOpenNav(false)}
-          className="fixed inset-0 z-50 bg-black/60 md:hidden"
-        >
-          <div className="absolute inset-x-0 flex items-center justify-between bg-white px-5 py-10">
+      <AnimatePresence>
+        {openNav ? (
+          <m.div
+            key={'backdrop'}
+            initial={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              ease: `easeInOut`,
+              duration: 0.3,
+            }}
+            onClick={() => setOpenNav(false)}
+            className="fixed inset-0 z-50 bg-black/60 md:hidden"
+          >
+            <m.div
+              initial={{ y: '-100%' }}
+              exit={{ y: '-100%' }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: 0.3,
+                ease: 'easeOut',
+              }}
+              className="absolute inset-x-0 z-50 flex items-center justify-between bg-white px-5 py-10"
+            >
+              <button
+                onClick={() => setOpenNav(!openNav)}
+                className="cursor-pointer"
+              >
+                <CloseIcon />
+              </button>
+              <ul className="flex gap-10 font-semibold">
+                <li>
+                  <a href="#">home</a>
+                </li>
+                <li>
+                  <a href="#">shop</a>
+                </li>
+                <li>
+                  <a href="#about">about</a>
+                </li>
+                <li>
+                  <a href="#">contact</a>
+                </li>
+              </ul>
+            </m.div>
+          </m.div>
+        ) : (
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: {
+                delay: openNav ? 2 : 0.3,
+              },
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className=" absolute z-50 flex w-full px-5 py-10 md:max-w-lg md:items-center md:px-12 md:py-16 "
+          >
             <button
               onClick={() => setOpenNav(!openNav)}
-              className="cursor-pointer"
+              className="cursor-pointer md:hidden"
             >
-              <CloseIcon />
+              <HamburgerIcon />
             </button>
-            <ul className="flex gap-10 font-semibold">
+            <LogoIcon className=" ml-auto mr-auto md:ml-0" />
+            <ul className="hidden gap-10 font-semibold text-white drop-shadow-md md:flex">
               <li>
-                <a href="#">home</a>
+                <a className="border-white pb-2 hover:border-b-2 " href="#">
+                  home
+                </a>
               </li>
               <li>
-                <a href="#">shop</a>
+                <a className="border-white pb-2 hover:border-b-2 " href="#">
+                  shop
+                </a>
               </li>
               <li>
-                <a href="#about">about</a>
+                <a
+                  className="border-white pb-2 hover:border-b-2 "
+                  href="#about"
+                >
+                  about
+                </a>
               </li>
               <li>
-                <a href="#">contact</a>
+                <a className="border-white pb-2 hover:border-b-2 " href="#">
+                  contact
+                </a>
               </li>
             </ul>
-          </div>
-        </div>
-      ) : (
-        <div className=" absolute inset-x-0 z-50 flex px-5 py-10 md:max-w-lg md:items-center md:px-12 md:py-16 ">
-          <button
-            onClick={() => setOpenNav(!openNav)}
-            className="cursor-pointer md:hidden"
-          >
-            <HamburgerIcon />
-          </button>
-          <LogoIcon className=" ml-auto mr-auto md:ml-0" />
-          <ul className="hidden gap-10 font-semibold text-white drop-shadow-md md:flex">
-            <li>
-              <a className="border-white pb-2 hover:border-b-2 " href="#">
-                home
-              </a>
-            </li>
-            <li>
-              <a className="border-white pb-2 hover:border-b-2 " href="#">
-                shop
-              </a>
-            </li>
-            <li>
-              <a className="border-white pb-2 hover:border-b-2 " href="#about">
-                about
-              </a>
-            </li>
-            <li>
-              <a className="border-white pb-2 hover:border-b-2 " href="#">
-                contact
-              </a>
-            </li>
-          </ul>
-        </div>
-      )}
+          </m.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
@@ -83,7 +118,13 @@ function Nav() {
 function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
   return (
     <>
-      <div
+      <m.div
+        initial={{ x: '-100%', opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{
+          ease: 'easeInOut',
+          duration: 0.8,
+        }}
         className={` relative md:col-span-3 lg:col-span-6 ${
           slide.id !== currentSlide ? 'hidden' : ''
         } `}
@@ -98,7 +139,15 @@ function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
           alt={slide.content}
           className=" hidden w-full object-cover sm:inline lg:h-full "
         />
-        <div className="absolute bottom-0 right-0 bg-black xl:-right-[156px] ">
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.8,
+            delay: 1,
+          }}
+          className="absolute bottom-0 right-0 bg-black xl:-right-[156px] "
+        >
           <button
             onClick={prevSlide}
             className="inline-flex cursor-pointer p-4 transition hover:bg-VeryDarkGray xl:px-8 xl:py-7"
@@ -111,10 +160,19 @@ function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
           >
             <RightAngleIcon />
           </button>
-        </div>
-      </div>
-      <div
-        className={` relative col-span-2 px-8  pb-16 pt-12 lg:col-span-4 lg:m-auto xl:p-20 ${
+        </m.div>
+      </m.div>
+      <m.div
+        initial={{ x: '100%', opacity: 0 }}
+        animate={{
+          x: 0,
+          opacity: 1,
+        }}
+        transition={{
+          ease: 'easeInOut',
+          duration: 0.8,
+        }}
+        className={` relative col-span-2 px-8 pb-16 pt-12 lg:col-span-4 lg:m-auto xl:p-20 ${
           slide.id !== currentSlide ? 'hidden' : ''
         } `}
       >
@@ -126,7 +184,7 @@ function Slides({ slide, currentSlide, nextSlide, prevSlide }) {
           {slide.link}
           <ArrowIcon className="fill-current" />
         </span>
-      </div>
+      </m.div>
     </>
   );
 }
@@ -153,8 +211,10 @@ function App() {
   return (
     <div className=" mx-auto min-h-screen max-w-[1440px] bg-white font-spartan ">
       <Nav />
+
       <main className=" grid grid-cols-1 md:min-h-screen ">
-        <section className=" min-h-screen md:row-span-1 md:grid md:min-h-0  md:grid-cols-1 lg:grid-cols-10 ">
+        <section className=" min-h-screen overflow-hidden md:row-span-1 md:grid  md:min-h-0 md:grid-cols-1 lg:grid-cols-10 ">
+          {/* <AnimatePresence> */}
           {slides.map((slide) => (
             <Slides
               key={slide.id}
@@ -164,20 +224,37 @@ function App() {
               prevSlide={prevSlide}
             />
           ))}
+          {/* </AnimatePresence> */}
         </section>
 
         <section
           id="about"
-          className=" min-h-screen md:row-span-1 md:grid md:min-h-0 md:grid-cols-7 "
+          className=" min-h-screen overflow-hidden md:row-span-1 md:grid md:min-h-0 md:grid-cols-7 "
         >
-          <div className=" md:col-span-2 ">
+          <m.div
+            initial={{ y: '-100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              delay: 0.9,
+              duration: 0.8,
+            }}
+            className=" md:col-span-2 "
+          >
             <img
               src={aboutDark}
               alt=""
               className=" h-full w-full object-cover "
             />
-          </div>
-          <div className=" px-10 py-16 md:col-span-3 md:m-auto xl:px-10 xl:py-0 ">
+          </m.div>
+          <m.div
+            initial={{ y: '100vh' }}
+            animate={{ y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 1.2,
+            }}
+            className=" overflow-hidden px-10 py-16 md:col-span-3 md:m-auto xl:px-10 xl:py-0 "
+          >
             <h1 className=" text-sm font-bold uppercase tracking-[5px] xl:text-base">
               About our furniture
             </h1>
@@ -189,14 +266,22 @@ function App() {
               styles or anything in between. Product specialists are available
               to help you create your dream space.
             </p>
-          </div>
-          <div className=" md:col-span-2 ">
+          </m.div>
+          <m.div
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              delay: 0.9,
+              duration: 0.8,
+            }}
+            className=" md:col-span-2 "
+          >
             <img
               src={aboutLight}
               alt=""
               className=" h-full w-full object-cover "
             />
-          </div>
+          </m.div>
         </section>
       </main>
     </div>
